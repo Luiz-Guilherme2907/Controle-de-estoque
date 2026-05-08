@@ -30,7 +30,7 @@ public class AuthService {
 
     public AuthResponse registrar(RegisterRequest req) {
         if (usuarioRepository.existsByEmail(req.email())) {
-            throw new BusinessException("E-mail já cadastrado: " + req.email());
+            throw new BusinessException("E-mail já cadastrado");
         }
         var usuario = Usuario.builder()
                 .nome(req.nome())
@@ -39,13 +39,13 @@ public class AuthService {
                 .role(Usuario.Role.USER)
                 .build();
         usuarioRepository.save(usuario);
-        return AuthResponse.of(jwtService.gerarToken(usuario), usuario.getEmail());
+        return AuthResponse.of(jwtService.gerarToken(usuario), usuario.getEmail(), usuario.getRole().name());
     }
 
     public AuthResponse login(LoginRequest req) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.email(), req.senha()));
         var usuario = usuarioRepository.findByEmail(req.email()).orElseThrow();
-        return AuthResponse.of(jwtService.gerarToken(usuario), usuario.getEmail());
+        return AuthResponse.of(jwtService.gerarToken(usuario), usuario.getEmail(), usuario.getRole().name());
     }
 }
