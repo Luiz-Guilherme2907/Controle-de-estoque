@@ -2,6 +2,7 @@ package com.controle.estoque.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
+import jakarta.servlet.DispatcherType;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     public JwtAuthFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest req) {
+        return req.getDispatcherType() == DispatcherType.ERROR;
     }
 
     @Override

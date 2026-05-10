@@ -2,7 +2,7 @@ spring:
   application:
     name: estoque
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/estoque}
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/estoque}
     username: ${DB_USER:admin}
     password: ${DB_PASS}
   jpa:
@@ -23,3 +23,7 @@ cors:
 
 server:
   port: 8080
+
+logging:
+  level:
+    org.springframework.security: TRACE

@@ -44,6 +44,11 @@ application-prod.yaml
 application-local.yml
 application-local.yaml
 
+### Claude Code ###
+.claude/
+contexto-compactado-*.md
+graphify-out/
+
 ### OS ###
 .DS_Store
 Thumbs.db
