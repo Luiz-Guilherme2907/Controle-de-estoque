@@ -28,6 +28,7 @@ public class MovimentacaoService {
         return movimentacaoRepository.findAllByProdutoId(produtoId, pageable).map(MovimentacaoResponse::from);
     }
 
+    @Transactional(readOnly = true)
     public Page<MovimentacaoResponse> listarHistorico(Long produtoId, Movimentacao.Tipo tipo, Instant de, Instant ate, Pageable pageable) {
         return movimentacaoRepository.findAll(MovimentacaoSpec.filtrar(produtoId, tipo, de, ate), pageable)
                 .map(MovimentacaoResponse::from);
