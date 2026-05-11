@@ -5,10 +5,13 @@ import com.controle.estoque.dto.response.MovimentacaoResponse;
 import com.controle.estoque.entity.Movimentacao;
 import com.controle.estoque.exception.BusinessException;
 import com.controle.estoque.repository.MovimentacaoRepository;
+import com.controle.estoque.repository.MovimentacaoSpec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class MovimentacaoService {
@@ -25,6 +28,11 @@ public class MovimentacaoService {
         return movimentacaoRepository.findAllByProdutoId(produtoId, pageable).map(MovimentacaoResponse::from);
     }
 
+    public Page<MovimentacaoResponse> listarHistorico(Long produtoId, Movimentacao.Tipo tipo, Instant de, Instant ate, Pageable pageable) {
+        return movimentacaoRepository.findAll(MovimentacaoSpec.filtrar(produtoId, tipo, de, ate), pageable)
+                .map(MovimentacaoResponse::from);
+    }
+
     @Transactional
     public MovimentacaoResponse registrar(MovimentacaoRequest req) {
         var produto = produtoService.buscarEntidade(req.produtoId());
@@ -35,6 +43,7 @@ public class MovimentacaoService {
         }
 
         produto.ajustarEstoque(delta);
+        produtoService.salvar(produto);
         var movimentacao = Movimentacao.builder()
                 .produto(produto)
                 .tipo(req.tipo())
