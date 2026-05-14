@@ -36,7 +36,7 @@ public class AuthService {
                 .nome(req.nome())
                 .email(req.email())
                 .senha(passwordEncoder.encode(req.senha()))
-                .role(Usuario.Role.ADMIN)
+                .role(Usuario.Role.USER)
                 .build();
         usuarioRepository.save(usuario);
         return AuthResponse.of(jwtService.gerarToken(usuario), usuario.getEmail(), usuario.getRole().name());

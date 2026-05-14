@@ -1,11 +1,13 @@
+# AVISO: credenciais abaixo são apenas para desenvolvimento local.
+# Em produção, use variáveis de ambiente e senhas fortes.
 services:
   postgres:
     image: postgres:16-alpine
     container_name: estoque-postgres
     environment:
-      POSTGRES_DB: estoque
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: ${POSTGRES_DB:-estoque}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin123}
     ports:
       - "5433:5432"
     volumes:
